@@ -1,0 +1,9 @@
+country: "CO"
+base_url: "https://www.camara.gov.co/proyectos-de-ley"
+list_selector: "table tbody tr"
+columns:
+  external_id: 0
+  title: 1
+  filing_date: 2
+  status: 3
+pdf_selector: "a[href$='.pdf']"
