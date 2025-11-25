@@ -1,0 +1,28 @@
+# Scraping
+requests==2.31.0
+beautifulsoup4==4.12.3
+lxml==5.2.1
+
+# Data processing
+python-dateutil==2.9.0
+
+# Database + ORM
+SQLAlchemy==2.0.30
+psycopg2-binary==2.9.9
+
+# Gemini (Google GenAI SDK)
+google-genai==0.7.0
+
+# Retry logic (optional but recommended)
+tenacity==8.5.0
+
+# YAML config
+PyYAML==6.0.1
+
+# Logging (built-in, no dependency)
+
+# Tests
+pytest==8.2.0
+
+# Running in docker
+uvicorn==0.30.1
