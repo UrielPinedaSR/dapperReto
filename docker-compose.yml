@@ -14,4 +14,4 @@ services:
       - db
     environment:
       GEMINI_API_KEY: ${GEMINI_API_KEY}
-    command: ["python", "-m", "pipeline.run_pipeline"]
+    command: ["python", "-m", "pipelines.run_pipeline"]

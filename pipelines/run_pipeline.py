@@ -8,6 +8,7 @@ from .classify import classify_sector
 from scrappers.col import ColombiaScraper
 import json
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -37,9 +38,29 @@ def run_country_colombia():
         print("Fetching and processing bills...")
         for raw in scraper.fetch_bills():
             bill_data = to_dict(scraper.COUNTRY, raw)
-
-            # No Gemini por 429s
-            bill_data["sector"] = "otros"
+            try:
+                bill_data["sector"] = classify_sector(
+                    bill_data["title"],
+                    bill_data.get("summary")
+                )
+            except Exception as e:
+                err = str(e).lower()
+        
+                # Si fue 429 (cuota excedida)
+                if "resource_exhausted" in err or "quota" in err or "429" in err:
+                    print("gemini cuota limitada. Esperando 60s y reintentando...")
+                    time.sleep(60)
+                    try:
+                        bill_data["sector"] = classify_sector(
+                            bill_data["title"],
+                            bill_data.get("summary")
+                        )
+                    except:
+                        print("Gemini sigue sin responder. Usando 'otros'.")
+                        bill_data["sector"] = "otros"
+                else:
+                    print("error inesperado con Gemini. Usando 'otros'. Error:", e)
+                    bill_data["sector"] = "otros"
 
             bill_data["pdf_urls"] = json.dumps(bill_data["pdf_urls"] or [])
 

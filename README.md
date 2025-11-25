@@ -98,6 +98,8 @@ Sectores soportados:
 
 -otros
 
+La clasificación por sectores económicos usa Gemini. Debido a la cuota de la Free Tier, se implementó un mecanismo de retry + fallback que garantiza que el pipeline sea resiliente y no falle. Si la cuota se agota, automáticamente etiqueta como 'otros'.
+
 4. **_Base de Datos_**
 
 Modelo SQLAlchemy con constraint único:
@@ -119,6 +121,7 @@ Esto permite un pipeline incremental que evita duplicados.
 
 3. Levantar todo con Docker
    docker-compose up --build
+   ![Docker](docker-compose.jpg)
 
 El contenedor app correrá automáticamente el pipeline.
 
@@ -127,13 +130,17 @@ El contenedor app correrá automáticamente el pipeline.
 Requisitos: Python 3.10+
 
 1. Instalar dependencias
+   cd docker
    pip install -r requirements.txt
 
 2. Iniciar base de datos (si usas Postgres local)
 
 Asegúrate de actualizar la URL de conexión en pipeline/db.py.
 
-3. Ejecutar el pipeline
+3. Cambia el Gemini Gen Key
+   cambiar el string GEN_API en classify.py
+
+4. Ejecutar el pipeline
    python -m pipeline.run_pipeline
 
 **_Salida Esperada_**
@@ -156,13 +163,21 @@ Cada registro incluirá:
 | **Sector económico (Gemini)** | Clasificación automática generada por Gemini.                |
 | **Timestamps**                | Tiempos de creación y actualización en la base de datos.     |
 
+![Resultados](results.jpg)
+
 ### Testing
 
 **_Tests Unitarios_**
 
-Un mínimo de tests se incluye en:
+Tests se incluye en:
 
-tests/test_transform.py
+test_transform.py
+
+Prueba la ejecución de la transformación.
+
+test_gemini.py
+Prueba Gemini con free trial.
+![Gemini](gemini.jpg)
 
 Para ejecutar:
 
