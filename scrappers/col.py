@@ -98,29 +98,26 @@ class ColombiaScraper(BaseScraper):
             total_pages = int(data.get("total_pages", page))
 
             for item in items:
-                # Campos que sí vimos en el JS
                 nro_camara = item.get("nro_camara")
                 nro_senado = item.get("nro_senado")
-                external_id = str(item.get("proyecto") or item.get("titulo") or nro_camara or nro_senado or "")
+
+                slug = item.get("link_web")
+                if slug:
+                    external_id = slug
+                else:
+                    external_id = f"{nro_camara or ''}-{nro_senado or ''}-{item.get('proyecto') or ''}"
+
                 title = item.get("titulo") or item.get("proyecto") or "Proyecto de ley"
-
-                # Estos campos dependen de cómo venga el JSON. Dejamos defensivo:
-                filing_date = item.get("fecha", None)  # puede requerir parseo en transform.py
+                filing_date = item.get("fecha", None)
                 status = item.get("estado", None)
-
-                # La API no muestra resumen en el JS, así que lo dejamos vacío por ahora.
-                summary = None
-
-                # Guardamos al menos el link web como referencia (detalle)
                 pdf_urls = []
-                if item.get("link_web"):
-                    pdf_urls.append(item["link_web"])
+                if slug:
+                    pdf_urls.append(slug)
 
                 yield RawBill(
                     external_id=external_id,
                     title=title,
                     filing_date=filing_date,
-                    summary=summary,
                     pdf_urls=pdf_urls,
                     status=status,
                 )

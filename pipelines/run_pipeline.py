@@ -19,29 +19,32 @@ def upsert_bill(session, bill_dict):
     existing = session.execute(stmt).scalar_one_or_none()
 
     if existing:
-        # update básico (podrías comparar cambios)
         for k, v in bill_dict.items():
             setattr(existing, k, v)
-        logger.info("Updated bill %s-%s", bill_dict["country"], bill_dict["external_id"])
+        logging.info("Updated bill %s-%s", bill_dict["country"], bill_dict["external_id"])
     else:
-        bill = Bill(**bill_dict)
-        session.add(bill)
-        logger.info("Inserted bill %s-%s", bill_dict["country"], bill_dict["external_id"])
+        session.add(Bill(**bill_dict))
+        logging.info("Inserted bill %s-%s", bill_dict["country"], bill_dict["external_id"])
 
 def run_country_colombia():
+    print("Initializing database...")
     init_db()
-    print("Initialized database.")
+
+    print("Starting scraper for Colombia...")
     scraper = ColombiaScraper()
-    print("Initialized Colombia scraper.")
+
     with SessionLocal() as session:
-        print("Database session started.")
+        print("Fetching and processing bills...")
         for raw in scraper.fetch_bills():
             bill_data = to_dict(scraper.COUNTRY, raw)
-            bill_data["sector"] = classify_sector(
-                bill_data["title"], bill_data.get("summary")
-            )
+
+            # No Gemini por 429s
+            bill_data["sector"] = "otros"
+
             bill_data["pdf_urls"] = json.dumps(bill_data["pdf_urls"] or [])
+
             upsert_bill(session, bill_data)
+
         session.commit()
 
 if __name__ == "__main__":

@@ -9,7 +9,6 @@ class RawBill:
     external_id: str
     title: str
     filing_date: str | None
-    summary: str | None
     pdf_urls: list[str]
     status: str | None
 

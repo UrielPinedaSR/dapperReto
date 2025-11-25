@@ -18,7 +18,6 @@ def to_dict(country: str, raw: RawBill) -> dict:
         "external_id": raw.external_id,
         "title": raw.title,
         "filing_date": parse_date(raw.filing_date),
-        "summary": raw.summary,
         "pdf_urls": raw.pdf_urls,
         "status": raw.status,
     }
