@@ -4,7 +4,7 @@ from google import genai
 
 MODEL_ID = "gemini-2.5-flash"
 
-client = genai.Client(api_key="AIzaSyA8bbtuWVDDVIcx2zVtIr3A1jaPvJUHvZ0")
+client = genai.Client(api_key="Modify_with_your_GenAI_API_Key")
 
 SECTORS = [
     "minero-energetico",
