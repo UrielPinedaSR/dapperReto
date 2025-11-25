@@ -1,5 +1,5 @@
 country: "CO"
-base_url: "https://www.camara.gov.co/proyectos-de-ley"
+base_url: "https://www.camara.gov.co/proyectos-de-ley#menu"
 list_selector: "table tbody tr"
 columns:
   external_id: 0

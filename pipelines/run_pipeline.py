@@ -12,7 +12,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 def upsert_bill(session, bill_dict):
-    # ¿existe ya?
     stmt = select(Bill).where(
         Bill.country == bill_dict["country"],
         Bill.external_id == bill_dict["external_id"],
@@ -31,8 +30,11 @@ def upsert_bill(session, bill_dict):
 
 def run_country_colombia():
     init_db()
+    print("Initialized database.")
     scraper = ColombiaScraper()
+    print("Initialized Colombia scraper.")
     with SessionLocal() as session:
+        print("Database session started.")
         for raw in scraper.fetch_bills():
             bill_data = to_dict(scraper.COUNTRY, raw)
             bill_data["sector"] = classify_sector(
@@ -43,4 +45,6 @@ def run_country_colombia():
         session.commit()
 
 if __name__ == "__main__":
+
+    print("Starting pipeline for Colombia...")
     run_country_colombia()
