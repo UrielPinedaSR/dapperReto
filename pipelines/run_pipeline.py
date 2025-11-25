@@ -5,7 +5,7 @@ from .db import SessionLocal, init_db
 from .models import Bill
 from .transform import to_dict
 from .classify import classify_sector
-from scrapers.colombia import ColombiaScraper
+from scrappers.col import ColombiaScraper
 import json
 import logging
 

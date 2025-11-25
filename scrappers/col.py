@@ -1,7 +1,7 @@
 # scrapers/colombia.py
 import requests
 from bs4 import BeautifulSoup
-from .base import BaseScraper, RawBill
+from .scrappers import BaseScraper, RawBill
 
 BASE_URL = "https://www.camara.gov.co/proyectos-de-ley"
 

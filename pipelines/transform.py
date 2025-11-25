@@ -1,6 +1,6 @@
 # pipeline/transform.py
 from datetime import datetime
-from scrapers.base import RawBill
+from scrappers.scrappers import RawBill
 
 def parse_date(date_str: str | None):
     if not date_str:

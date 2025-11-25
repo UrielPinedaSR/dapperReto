@@ -1,4 +1,4 @@
-# scrapers/base.py
+# scrapers/scrappers.py
 from abc import ABC, abstractmethod
 from typing import Iterable
 from dataclasses import dataclass
